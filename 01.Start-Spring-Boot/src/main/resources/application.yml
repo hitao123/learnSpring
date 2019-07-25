@@ -1,0 +1,12 @@
+spring:
+  profiles:
+    active: db, core, admin
+  messages:
+    encoding: UTF-8
+
+school:
+  student:
+    sno: 40000000
+    name: 24
+    sex: male
+
