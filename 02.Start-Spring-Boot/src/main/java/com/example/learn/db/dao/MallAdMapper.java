@@ -1,7 +1,7 @@
 package com.example.learn.db.dao;
 
-import com.example.learn.db.domain.MallAd;
-import com.example.learn.db.domain.MallAdExample;
+import com.example.learn.db.entity.MallAd;
+import com.example.learn.db.entity.MallAdExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
