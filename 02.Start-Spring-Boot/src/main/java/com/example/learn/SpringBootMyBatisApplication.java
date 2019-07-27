@@ -4,7 +4,7 @@ import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication(scanBasePackages = {"com.example.learn.db"})
+@SpringBootApplication(scanBasePackages = {"com.example.learn"})
 @MapperScan("com.example.learn.db.dao")
 public class SpringBootMyBatisApplication {
 
