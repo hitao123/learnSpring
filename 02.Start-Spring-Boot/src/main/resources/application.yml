@@ -4,9 +4,31 @@ spring:
   messages:
     encoding: UTF-8
 
+  cache:
+    type: redis
+
+  redis:
+    database: 0
+    host: localhost
+    port: 6379
+    password: ''
+    pool:
+      max-active: 8
+      max-wait: -1
+      max-idle: 8
+      min-idle: 0
+    timeout: 5000
+
 logging:
   level:
     root:  ERROR
     org.springframework:  ERROR
     org.mybatis:  DEBUG
-    com.example.learn.db:  DEBUG
+    com.example.learn:  INFO
+  file: logfile.log
+#  path: app/logs
+  pattern:
+    console: '%d{yyyy-MMM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{15} - %msg%n'
+
+
+
