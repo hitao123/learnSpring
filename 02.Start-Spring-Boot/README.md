@@ -90,6 +90,13 @@ resource 里面的 Mapper.xml ==》 resultMap ==》type="com.example.learn.db.en
 > spring Boot devtools 的作用是热加载，对本地开发非常友好，类比前端就是编辑器改动保存之后，浏览器reload，这里是服务器热更新
 这部分代码，能实时看到改动
 
+8.为什么要进行序列化？什么时候进行序列化
+
+```html
+序列化就是一种用来处理对象流的机制，所谓对象流也就是将对象的内容进行流化,将数据分解成字节流，以便存储在文件中或在网络上传输。
+通俗的说就是将 Java 对象转换成公共的格式（各个系统都能识别的）叫做序列化，将公共的格式转换成对象叫做反序列化
+```
+
 ## Summary
 
 - generatorConfig.xml `<properties resource="xx.properties">` 使用 yml 无效
@@ -126,9 +133,32 @@ Execution default-cli of goal org.mybatis.generator:mybatis-generator-maven-plug
   path: app/logs
 ```
 
+- Redis 相关注解
+
+```html
+@CacheConfig
+
+这个注解在类上使用，用来描述该类中所有方法使用的缓存名称
+
+@Cacheable
+
+这个注解一般加在查询方法上，表示将一个方法的返回值缓存起来，默认情况下，缓存的key就是方法的参数，缓存的value就是方法的返回值
+
+@CachePut
+
+这个注解一般加在更新方法上，当数据库中的数据更新后，缓存中的数据也要跟着更新，使用该注解，可以将方法的返回值自动更新到已经存在的key上
+
+@CacheEvict
+
+这个注解一般加在删除方法上，当数据库中的数据删除后，相关的缓存数据也要自动清除，
+该注解在使用的时候也可以配置按照某种条件删除(condition属性)或者或者配置清除所有缓存(allEntries属性)
+```
+
 ## Referance
 
 1. [数据库连接池的作用](https://blog.csdn.net/dly1580854879/article/details/73088884)
 2. [MBG 的配置文件详细解析](https://gitee.com/free/Mybatis_Utils/blob/master/MybatisGeneator/MybatisGeneator.md)
 3. [mybatis Mapper xml 详解](http://www.mybatis.org/mybatis-3/zh/sqlmap-xml.html)
 4. [spring Boot 日志处理](https://blog.csdn.net/yu0_zhang0/article/details/83898819)
+5. [为什么要进行序列化](https://blog.csdn.net/tlycherry/article/details/8986720)
+6. [@RequestParam @RequestBody @PathVariable 等参数绑定注解详解](https://blog.csdn.net/walkerJong/article/details/7946109)
