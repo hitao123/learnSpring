@@ -14,6 +14,8 @@
         <plugin type="org.mybatis.generator.plugins.ToStringPlugin"/>
         <!-- 自动生成equals方法和hashcode方法 -->
         <plugin type="org.mybatis.generator.plugins.EqualsHashCodePlugin"/>
+        <!-- 序列化 -->
+        <plugin type="org.mybatis.generator.plugins.SerializablePlugin" />
 
         <!-- 非官方插件 https://github.com/itfsw/mybatis-generator-plugin -->
         <!-- 查询单条数据插件 -->

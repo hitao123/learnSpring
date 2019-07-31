@@ -3,6 +3,7 @@ package com.example.learn.db.service;
 import com.example.learn.db.dao.MallBrandMapper;
 import com.example.learn.db.entity.MallBrand;
 import com.example.learn.db.entity.MallBrandExample;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -39,6 +40,7 @@ public class MallBrandService {
         return (int) brandMapper.countByExample(example);
     }
 
+    @Cacheable("brand")
     public List<MallBrand> all() {
         MallBrandExample example = new MallBrandExample();
         example.or().andDeletedEqualTo(false);

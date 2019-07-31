@@ -4,20 +4,19 @@ spring:
   messages:
     encoding: UTF-8
 
-  cache:
-    type: redis
-
   redis:
     database: 0
     host: localhost
     port: 6379
     password: ''
-    pool:
-      max-active: 8
-      max-wait: -1
-      max-idle: 8
-      min-idle: 0
     timeout: 5000
+    jedis:
+      pool:
+        max-active: 8
+        max-wait: -1
+        max-idle: 8
+        min-idle: 0
+
 
 logging:
   level:

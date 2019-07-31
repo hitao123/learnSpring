@@ -1,8 +1,10 @@
 package com.example.learn.config;
 
-//import com.fasterxml.jackson.annotation.JsonAutoDetect;
-//import com.fasterxml.jackson.annotation.PropertyAccessor;
-//import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.boot.autoconfigure.AutoConfigureAfter;
+import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
 import org.springframework.cache.annotation.EnableCaching;
@@ -18,8 +20,9 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 import java.time.Duration;
 
-@Configuration
 @EnableCaching
+@Configuration
+@AutoConfigureAfter(RedisAutoConfiguration.class)
 public class RedisConfig extends CachingConfigurerSupport {
 
     /**
@@ -27,17 +30,17 @@ public class RedisConfig extends CachingConfigurerSupport {
      * @param connectionFactory
      * @return
      */
-    @Bean
-    public CacheManager cacheManager(RedisConnectionFactory connectionFactory) {
-        // 初始化一个 RedisWriter
-        RedisCacheWriter redisCacheWriter = RedisCacheWriter.nonLockingRedisCacheWriter(connectionFactory);
-        RedisCacheConfiguration defaultCacheConfig = RedisCacheConfiguration.defaultCacheConfig();
-        // 设置默认超时时间是 1 天
-        defaultCacheConfig.entryTtl(Duration.ofDays(1));
-        // 初始化 RedisCacheManager
-        RedisCacheManager cacheManager = new RedisCacheManager(redisCacheWriter, defaultCacheConfig);
-        return cacheManager;
-    }
+   @Bean
+   public CacheManager cacheManager(RedisConnectionFactory connectionFactory) {
+       // 初始化一个 RedisWriter
+       RedisCacheWriter redisCacheWriter = RedisCacheWriter.nonLockingRedisCacheWriter(connectionFactory);
+       RedisCacheConfiguration defaultCacheConfig = RedisCacheConfiguration.defaultCacheConfig();
+       // 设置默认超时时间是 1 天
+       defaultCacheConfig.entryTtl(Duration.ofDays(1));
+       // 初始化 RedisCacheManager
+       RedisCacheManager cacheManager = new RedisCacheManager(redisCacheWriter, defaultCacheConfig);
+       return cacheManager;
+   }
 
     /**
      * RedisTemplate 相关配置
@@ -45,24 +48,26 @@ public class RedisConfig extends CachingConfigurerSupport {
      * @return
      */
     @Bean
-    public RedisTemplate<Object, Object> redisTemplate(RedisConnectionFactory connectionFactory) {
-        RedisTemplate<Object, Object> template = new RedisTemplate<>();
+    public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory connectionFactory) {
+        RedisTemplate<String, Object> template = new RedisTemplate<>();
+
         // 配置连接工厂
         template.setConnectionFactory(connectionFactory);
 
         // 使用 Jackson2JsonRedisSerializer 进行序列化和反序列化 (将对象序列化为JSON)
-        // Jackson2JsonRedisSerializer jacksonSerialize = new Jackson2JsonRedisSerializer(Object.class);
-        // ObjectMapper om = new ObjectMapper();
+        Jackson2JsonRedisSerializer jacksonSerialize = new Jackson2JsonRedisSerializer(Object.class);
+        ObjectMapper om = new ObjectMapper();
         // 指定要序列化的域， field get set 以及修饰范围， any 是都有包括 private 和 public
-        // om.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
-        // om.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
-        // jacksonSerialize.setObjectMapper(om);
+        om.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
+        om.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
+        jacksonSerialize.setObjectMapper(om);
 
 
         // 值采用 json 序列化
         template.setKeySerializer(new StringRedisSerializer());
-        template.setValueSerializer(new Jackson2JsonRedisSerializer(Object.class));
-        // template.setHashKeySerializer(new Jackson2JsonRedisSerializer(Object.class));
+        template.setValueSerializer(jacksonSerialize);
+        template.setHashKeySerializer(new StringRedisSerializer());
+        template.setHashValueSerializer(jacksonSerialize);
         template.afterPropertiesSet();
 
         return template;

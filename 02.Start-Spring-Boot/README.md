@@ -154,6 +154,52 @@ Execution default-cli of goal org.mybatis.generator:mybatis-generator-maven-plug
 该注解在使用的时候也可以配置按照某种条件删除(condition属性)或者或者配置清除所有缓存(allEntries属性)
 ```
 
+- Redis 遇到的问题
+
+1. 最开始导入 `spring-boot-starter-data-redis` 依赖发现如下错误, 无法找到 bean，原因是 SPDR 使用注解 @ConditionalOnMissingBean
+@AutoConfigureAfter(RedisAutoConfiguration.class)，RedisConfig 里面 RedisTemplate 实现类无法注入bean，而且 pom.xml 配置也有问题
+需要排除 lettuce ，然后添加 jedis 依赖，配置文件也要做相应修改，后来该问题不出现了，后面还要从根本上理解这个问题出现的原因，[思路](https://www.cnblogs.com/zhangyy3/p/9127109.html)，在具体使用 Service 层添加 `@Cacheable("brand")` 注解的时候，接口报 500 的序列化错误，
+原因是返回的实体类没有实现 Serializable 接口，添加  Mybatis 插件`<plugin type="org.mybatis.generator.plugins.SerializablePlugin" />`
+重新生成一遍，重新启动项目，就可以了，接口正常返回， 本地 Redis 服务器能看到存储的数据和 log
+
+```java
+*************************** APPLICATION FAILED TO START
+
+Description:
+
+Parameter 0 of constructor in com.github.wjoz.talkative.messageService.repository.redis.impl.RedisMessageRepositoryImpl required a bean of type 'org.springframework.data.redis.core.RedisTemplate' that could not be found. - Bean method 'redisTemplate' in 'RedisAutoConfiguration.RedisConfiguration' not loaded because @ConditionalOnMissingBean (names: redisTemplate; SearchStrategy: all) found bean 'redisTemplate'
+
+Action:
+
+Consider revisiting the conditions above or defining a bean of type 'org.springframework.data.redis.core.RedisTemplate' in your configuration.
+
+================================
+
+<dependency>
+  <groupId>org.springframework.boot</groupId>
+  <artifactId>spring-boot-starter-data-redis</artifactId>
+  <exclusions>
+    <exclusion>
+      <groupId>io.lettuce</groupId>
+      <artifactId>lettuce-core</artifactId>
+    </exclusion>
+      </exclusions>
+</dependency>
+<dependency>
+    <groupId>redis.clients</groupId>
+    <artifactId>jedis</artifactId>
+</dependency>
+
+================================
+
+jedis:
+  pool:
+    max-active: 8
+    max-wait: -1
+    max-idle: 8
+    min-idle: 0
+```
+
 ## Referance
 
 1. [数据库连接池的作用](https://blog.csdn.net/dly1580854879/article/details/73088884)
