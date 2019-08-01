@@ -14,12 +14,6 @@
 
 ### ✅ 5. 学习 Spring Boot Devtools 的使用方法
 
-### 6. 学习 Spring Boot Shiro 如何做权限管理
-
-### 7. 学习 Spring 如何处理 cookie，登录态
-
-### 8. 学习 Spring 异常控制
-
 ## Problem
 
 1.什么是 myBatis
@@ -163,15 +157,21 @@ Execution default-cli of goal org.mybatis.generator:mybatis-generator-maven-plug
 重新生成一遍，重新启动项目，就可以了，接口正常返回， 本地 Redis 服务器能看到存储的数据和 log
 
 ```java
-*************************** APPLICATION FAILED TO START
+***************************
+APPLICATION FAILED TO START
+***************************
 
 Description:
 
-Parameter 0 of constructor in com.github.wjoz.talkative.messageService.repository.redis.impl.RedisMessageRepositoryImpl required a bean of type 'org.springframework.data.redis.core.RedisTemplate' that could not be found. - Bean method 'redisTemplate' in 'RedisAutoConfiguration.RedisConfiguration' not loaded because @ConditionalOnMissingBean (names: redisTemplate; SearchStrategy: all) found bean 'redisTemplate'
+Parameter 0 of method hashOperations in com.example.learn.config.RedisConfig required a bean of type 'org.springframework.data.redis.core.RedisTemplate' that could not be found.
+
+The following candidates were found but could not be injected:
+	- Bean method 'redisTemplate' in 'RedisAutoConfiguration' not loaded because @ConditionalOnMissingBean (names: redisTemplate; SearchStrategy: all) found beans named redisTemplate
+
 
 Action:
 
-Consider revisiting the conditions above or defining a bean of type 'org.springframework.data.redis.core.RedisTemplate' in your configuration.
+Consider revisiting the entries above or defining a bean of type 'org.springframework.data.redis.core.RedisTemplate' in your configuration.
 
 ================================
 
