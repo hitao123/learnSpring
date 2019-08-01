@@ -2,8 +2,62 @@
 
 ## Introduce
 
-### 6. 学习 Spring Boot Shiro 如何做权限管理
+### 1. 学习 Spring Boot Shiro 如何做权限管理
 
-### 7. 学习 Spring 如何处理 cookie，登录态
+### 2. 学习 Spring 如何处理 cookie，登录态
 
-### 8. 学习 Spring 异常控制
+### 3. 学习 Spring 异常控制
+
+## Problem
+
+### 权限表的设计
+
+1.用户表设计(保存用户的基本信息)
+
+```sql
+CREATE TABLE `mall_admin` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `username` varchar(63) NOT NULL DEFAULT '' COMMENT '管理员名称',
+  `password` varchar(63) NOT NULL DEFAULT '' COMMENT '管理员密码',
+  `last_login_ip` varchar(63) DEFAULT '' COMMENT '最近一次登录IP地址',
+  `last_login_time` datetime DEFAULT NULL COMMENT '最近一次登录时间',
+  `avatar` varchar(255) DEFAULT '''' COMMENT '头像图片',
+  `add_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  `deleted` tinyint(1) DEFAULT '0' COMMENT '逻辑删除',
+  `role_ids` varchar(127) DEFAULT '[]' COMMENT '角色列表',
+  PRIMARY KEY (`id`)
+);
+```
+
+2.权限表(保存用户的权限信息)
+
+```sql
+DROP TABLE IF EXISTS `mall_permission`;
+CREATE TABLE `mall_permission` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `role_id` int(11) DEFAULT NULL COMMENT '角色ID',
+  `permission` varchar(63) DEFAULT NULL COMMENT '权限',
+  `add_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  `deleted` tinyint(1) DEFAULT '0' COMMENT '逻辑删除',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4 COMMENT='权限表';
+```
+
+3.角色表(保存系统存在的角色)
+
+```sql
+DROP TABLE IF EXISTS `mall_role`;
+CREATE TABLE `mall_role` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(63) NOT NULL COMMENT '角色名称',
+  `desc` varchar(1023) DEFAULT NULL COMMENT '角色描述',
+  `enabled` tinyint(1) DEFAULT '1' COMMENT '是否启用',
+  `add_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  `deleted` tinyint(1) DEFAULT '0' COMMENT '逻辑删除',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name_UNIQUE` (`name`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COMMENT='角色表';
+```

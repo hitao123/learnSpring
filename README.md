@@ -10,7 +10,7 @@
 
 > 简单提供一个 rest 服务，获取 application.yml 的值 以及如何使用 @Autowired 注解
 
-### 02.Start-Spring-redis
+### 02.Start-Spring-Redis
 
 > 在前面一节提供 rest 接口的前提下，使用 spring data redis 对查询接口做 redis 缓存
 
