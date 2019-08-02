@@ -61,3 +61,14 @@ CREATE TABLE `mall_role` (
   UNIQUE KEY `name_UNIQUE` (`name`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COMMENT='角色表';
 ```
+
+### 前端RBAC管理系统
+
+1. 基于 [vue-admin-template](https://github.com/PanJiaChen/vue-admin-template) permision 分支进行开发修改
+2. 功能点
+
+```html
+1. 登入和登出
+2. 菜单和按钮权限根据登录用户角色不同而不一样
+3. 目前只设计两种角色，超级管理员，基于菜单的管理员，基于按钮的权限管理员
+```

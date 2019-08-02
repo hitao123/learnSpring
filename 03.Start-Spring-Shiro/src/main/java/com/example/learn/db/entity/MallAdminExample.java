@@ -248,7 +248,7 @@ public class MallAdminExample {
             if (value == null) {
                 throw new RuntimeException("Value for " + property + " cannot be null");
             }
-            roleIdsCriteria.add(new Criterion(condition, value, "com.example.learn.db.mybatis.JsonIntegerArrayTypeHandler"));
+            roleIdsCriteria.add(new Criterion(condition, value, "com.example.learn.mybatis.JsonIntegerArrayTypeHandler"));
             allCriteria = null;
         }
 
@@ -256,7 +256,7 @@ public class MallAdminExample {
             if (value1 == null || value2 == null) {
                 throw new RuntimeException("Between values for " + property + " cannot be null");
             }
-            roleIdsCriteria.add(new Criterion(condition, value1, value2, "com.example.learn.db.mybatis.JsonIntegerArrayTypeHandler"));
+            roleIdsCriteria.add(new Criterion(condition, value1, value2, "com.example.learn.mybatis.JsonIntegerArrayTypeHandler"));
             allCriteria = null;
         }
 

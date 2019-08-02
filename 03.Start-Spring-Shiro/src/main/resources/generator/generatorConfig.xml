@@ -65,7 +65,7 @@
         <table tableName="mall_admin">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
             <columnOverride column="role_ids" javaType="java.lang.Integer[]"
-                            typeHandler="com.example.learn.db.mybatis.JsonIntegerArrayTypeHandler"/>
+                            typeHandler="com.example.learn.mybatis.JsonIntegerArrayTypeHandler"/>
         </table>
         <table tableName="mall_brand">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>

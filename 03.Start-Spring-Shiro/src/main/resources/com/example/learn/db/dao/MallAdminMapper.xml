@@ -15,7 +15,7 @@
     <result column="add_time" jdbcType="TIMESTAMP" property="addTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="deleted" jdbcType="BIT" property="deleted" />
-    <result column="role_ids" jdbcType="VARCHAR" property="roleIds" typeHandler="com.example.learn.db.mybatis.JsonIntegerArrayTypeHandler" />
+    <result column="role_ids" jdbcType="VARCHAR" property="roleIds" typeHandler="com.example.learn.mybatis.JsonIntegerArrayTypeHandler" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <!--
@@ -51,15 +51,15 @@
                   and ${criterion.condition}
                 </when>
                 <when test="criterion.singleValue">
-                  and ${criterion.condition} #{criterion.value,typeHandler=com.example.learn.db.mybatis.JsonIntegerArrayTypeHandler}
+                  and ${criterion.condition} #{criterion.value,typeHandler=com.example.learn.mybatis.JsonIntegerArrayTypeHandler}
                 </when>
                 <when test="criterion.betweenValue">
-                  and ${criterion.condition} #{criterion.value,typeHandler=com.example.learn.db.mybatis.JsonIntegerArrayTypeHandler} and #{criterion.secondValue,typeHandler=com.example.learn.db.mybatis.JsonIntegerArrayTypeHandler}
+                  and ${criterion.condition} #{criterion.value,typeHandler=com.example.learn.mybatis.JsonIntegerArrayTypeHandler} and #{criterion.secondValue,typeHandler=com.example.learn.mybatis.JsonIntegerArrayTypeHandler}
                 </when>
                 <when test="criterion.listValue">
                   and ${criterion.condition}
                   <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
-                    #{listItem,typeHandler=com.example.learn.db.mybatis.JsonIntegerArrayTypeHandler}
+                    #{listItem,typeHandler=com.example.learn.mybatis.JsonIntegerArrayTypeHandler}
                   </foreach>
                 </when>
               </choose>
@@ -103,15 +103,15 @@
                   and ${criterion.condition}
                 </when>
                 <when test="criterion.singleValue">
-                  and ${criterion.condition} #{criterion.value,typeHandler=com.example.learn.db.mybatis.JsonIntegerArrayTypeHandler}
+                  and ${criterion.condition} #{criterion.value,typeHandler=com.example.learn.mybatis.JsonIntegerArrayTypeHandler}
                 </when>
                 <when test="criterion.betweenValue">
-                  and ${criterion.condition} #{criterion.value,typeHandler=com.example.learn.db.mybatis.JsonIntegerArrayTypeHandler} and #{criterion.secondValue,typeHandler=com.example.learn.db.mybatis.JsonIntegerArrayTypeHandler}
+                  and ${criterion.condition} #{criterion.value,typeHandler=com.example.learn.mybatis.JsonIntegerArrayTypeHandler} and #{criterion.secondValue,typeHandler=com.example.learn.mybatis.JsonIntegerArrayTypeHandler}
                 </when>
                 <when test="criterion.listValue">
                   and ${criterion.condition}
                   <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
-                    #{listItem,typeHandler=com.example.learn.db.mybatis.JsonIntegerArrayTypeHandler}
+                    #{listItem,typeHandler=com.example.learn.mybatis.JsonIntegerArrayTypeHandler}
                   </foreach>
                 </when>
               </choose>
@@ -259,7 +259,7 @@
       )
     values (#{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{lastLoginIp,jdbcType=VARCHAR}, 
       #{lastLoginTime,jdbcType=TIMESTAMP}, #{avatar,jdbcType=VARCHAR}, #{addTime,jdbcType=TIMESTAMP}, 
-      #{updateTime,jdbcType=TIMESTAMP}, #{deleted,jdbcType=BIT}, #{roleIds,jdbcType=VARCHAR,typeHandler=com.example.learn.db.mybatis.JsonIntegerArrayTypeHandler}
+      #{updateTime,jdbcType=TIMESTAMP}, #{deleted,jdbcType=BIT}, #{roleIds,jdbcType=VARCHAR,typeHandler=com.example.learn.mybatis.JsonIntegerArrayTypeHandler}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.example.learn.db.entity.MallAdmin">
@@ -326,7 +326,7 @@
         #{deleted,jdbcType=BIT},
       </if>
       <if test="roleIds != null">
-        #{roleIds,jdbcType=VARCHAR,typeHandler=com.example.learn.db.mybatis.JsonIntegerArrayTypeHandler},
+        #{roleIds,jdbcType=VARCHAR,typeHandler=com.example.learn.mybatis.JsonIntegerArrayTypeHandler},
       </if>
     </trim>
   </insert>
@@ -375,7 +375,7 @@
         deleted = #{record.deleted,jdbcType=BIT},
       </if>
       <if test="record.roleIds != null">
-        role_ids = #{record.roleIds,jdbcType=VARCHAR,typeHandler=com.example.learn.db.mybatis.JsonIntegerArrayTypeHandler},
+        role_ids = #{record.roleIds,jdbcType=VARCHAR,typeHandler=com.example.learn.mybatis.JsonIntegerArrayTypeHandler},
       </if>
     </set>
     <if test="_parameter != null">
@@ -397,7 +397,7 @@
       add_time = #{record.addTime,jdbcType=TIMESTAMP},
       update_time = #{record.updateTime,jdbcType=TIMESTAMP},
       deleted = #{record.deleted,jdbcType=BIT},
-      role_ids = #{record.roleIds,jdbcType=VARCHAR,typeHandler=com.example.learn.db.mybatis.JsonIntegerArrayTypeHandler}
+      role_ids = #{record.roleIds,jdbcType=VARCHAR,typeHandler=com.example.learn.mybatis.JsonIntegerArrayTypeHandler}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -434,7 +434,7 @@
         deleted = #{deleted,jdbcType=BIT},
       </if>
       <if test="roleIds != null">
-        role_ids = #{roleIds,jdbcType=VARCHAR,typeHandler=com.example.learn.db.mybatis.JsonIntegerArrayTypeHandler},
+        role_ids = #{roleIds,jdbcType=VARCHAR,typeHandler=com.example.learn.mybatis.JsonIntegerArrayTypeHandler},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -453,7 +453,7 @@
       add_time = #{addTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
       deleted = #{deleted,jdbcType=BIT},
-      role_ids = #{roleIds,jdbcType=VARCHAR,typeHandler=com.example.learn.db.mybatis.JsonIntegerArrayTypeHandler}
+      role_ids = #{roleIds,jdbcType=VARCHAR,typeHandler=com.example.learn.mybatis.JsonIntegerArrayTypeHandler}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="selectOneByExample" parameterType="com.example.learn.db.entity.MallAdminExample" resultMap="BaseResultMap">

@@ -11,6 +11,9 @@ import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 @Configuration
 public class ShiroConfig {
 
@@ -22,6 +25,21 @@ public class ShiroConfig {
     @Bean
     public ShiroFilterFactoryBean shiroFilter(SecurityManager securityManager) {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
+        shiroFilterFactoryBean.setSecurityManager(securityManager);
+        Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
+
+        filterChainDefinitionMap.put("/admin/auth/login", "anon");
+        filterChainDefinitionMap.put("/admin/auth/index", "anon");
+        filterChainDefinitionMap.put("/admin/auth/401", "anon");
+        filterChainDefinitionMap.put("/admin/auth/403", "anon");
+        filterChainDefinitionMap.put("/admin/**", "authc");
+
+        shiroFilterFactoryBean.setLoginUrl("/admin/auth/401");
+        shiroFilterFactoryBean.setSuccessUrl("/admin/auth/index");
+        shiroFilterFactoryBean.setUnauthorizedUrl("/admin/auth/403");
+
+        shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
+
         return shiroFilterFactoryBean;
     }
 
@@ -45,8 +63,4 @@ public class ShiroConfig {
         authorizationAttributeSourceAdvisor.setSecurityManager(securityManager);
         return authorizationAttributeSourceAdvisor;
     }
-
-
-
-
 }
