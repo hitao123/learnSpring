@@ -44,7 +44,6 @@ service.interceptors.response.use(
    */
   response => {
     const res = response.data
-    console.log(res)
     // if the custom code is not 0, it is judged as an error.
     if (res.errno !== 0) {
       Message({
@@ -66,7 +65,7 @@ service.interceptors.response.use(
           })
         })
       }
-      return Promise.reject(new Error(res.message || 'Error'))
+      return Promise.reject(new Error(res.errmsg || 'Error'))
     } else {
       return res
     }
@@ -74,7 +73,7 @@ service.interceptors.response.use(
   error => {
     console.log('err' + error) // for debug
     Message({
-      message: error.message,
+      message: error.errmsg,
       type: 'error',
       duration: 5 * 1000
     })

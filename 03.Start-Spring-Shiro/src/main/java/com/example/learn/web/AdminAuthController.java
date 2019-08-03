@@ -52,7 +52,6 @@ public class AdminAuthController {
 
         try {
             currentUser.login(new UsernamePasswordToken(username, password));
-
         } catch (UnknownAccountException uae) {
             return ResponseUtil.fail(1000, "用户账户或者密码错误");
         } catch (LockedAccountException lae) {
@@ -76,9 +75,9 @@ public class AdminAuthController {
         return ResponseUtil.ok();
     }
 
+    @RequiresAuthentication
     @GetMapping("/info")
     public Object info() {
-        logger.info("🐂🐂============================================>");
         Subject currentUser = SecurityUtils.getSubject();
         MallAdmin admin = (MallAdmin) currentUser.getPrincipal();
 
@@ -110,5 +109,4 @@ public class AdminAuthController {
     public Object page403() {
         return ResponseUtil.unauthz();
     }
-
 }

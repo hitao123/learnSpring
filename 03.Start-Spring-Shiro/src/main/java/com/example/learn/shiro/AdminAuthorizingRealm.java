@@ -22,8 +22,7 @@ import java.util.Set;
 
 public class AdminAuthorizingRealm extends AuthorizingRealm {
 
-
-    private static  final Logger log = LoggerFactory.getLogger(AdminAuthorizingRealm.class);
+    private static final Logger log = LoggerFactory.getLogger(AdminAuthorizingRealm.class);
     @Autowired
     private MallAdminService adminService;
     @Autowired

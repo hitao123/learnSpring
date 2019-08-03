@@ -8,8 +8,10 @@ import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSource
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -26,7 +28,7 @@ public class ShiroConfig {
     public ShiroFilterFactoryBean shiroFilter(SecurityManager securityManager) {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         shiroFilterFactoryBean.setSecurityManager(securityManager);
-        Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
+        Map<String, String> filterChainDefinitionMap = new LinkedHashMap<String, String>();
 
         filterChainDefinitionMap.put("/admin/auth/login", "anon");
         filterChainDefinitionMap.put("/admin/auth/index", "anon");
@@ -62,5 +64,13 @@ public class ShiroConfig {
         AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor = new AuthorizationAttributeSourceAdvisor();
         authorizationAttributeSourceAdvisor.setSecurityManager(securityManager);
         return authorizationAttributeSourceAdvisor;
+    }
+
+    @Bean
+    @DependsOn("lifecycleBeanPostProcessor")
+    public static DefaultAdvisorAutoProxyCreator defaultAdvisorAutoProxyCreator() {
+        DefaultAdvisorAutoProxyCreator creator = new DefaultAdvisorAutoProxyCreator();
+        creator.setProxyTargetClass(true);
+        return creator;
     }
 }
