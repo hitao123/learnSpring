@@ -77,3 +77,31 @@ CREATE TABLE `mall_role` (
 
 1. 开始的时候是 rest 返回数据结构和 后台模板的不一致，导致定制头 getToken 无法设置头部，所以一直是 401
 2. 解决完上面的一个问题发现 role 不能为空，接着在 role 表插入响应的数据库返回，解决问题
+
+### 如何创建定时任务
+
+> 在前端我们可以使用 setInterval, setTimeOut 处理定时任务，在 spring 我们可以使用 @Scheduled 来启动我们的定时任务，启动类要
+加上 @Scheduled 注解
+
+```html
+@Scheduled(fixedRate = 5000) ：上一次开始执行时间点之后5秒再执行
+@Scheduled(fixedDelay = 5000) ：上一次执行完毕时间点之后5秒再执行
+@Scheduled(initialDelay=1000, fixedRate=5000) ：第一次延迟1秒后执行，之后按fixedRate的规则每5秒执行一次
+@Scheduled(cron="*/5 * * * * *") ：通过cron表达式定义规则
+```
+
+### 如何基于 shiro @RequiresPermissions 注解来实现菜单权限控制
+
+1. @RequiresPermissions 是如何使用的
+
+2. 添加自定义 RequiresPermissionsDesc 注解
+
+3. 如何通过 java 反射机制来实现注解的作用
+
+```html
+
+```
+
+### com.github.pagehelper 帮助实现分页功能
+
+> 查询列表的功能经常需要做分页查询，这里是利用开源的 pagehelper 来实现分页的功能，后续可以对这个源码进行了解一下
