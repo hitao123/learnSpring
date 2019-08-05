@@ -92,15 +92,28 @@ CREATE TABLE `mall_role` (
 
 ### 如何基于 shiro @RequiresPermissions 注解来实现菜单权限控制
 
-1. @RequiresPermissions 是如何使用的
+- 在 `AdminAuthorizingRealm` 实现类里面我们注入了三个 service, 也对应着上面的三张表，根据业务的不同，我们需要向三张表里面插入数据，详细的数据可以查看 sql 目录的 mall_data.sql
 
-2. 添加自定义 RequiresPermissionsDesc 注解
+```java
+    @Autowired
+    private MallAdminService adminService;
+    @Autowired
+    private MallRoleService roleService;
+    @Autowired
+    private MallPermissionService permissionService;
 
-3. 如何通过 java 反射机制来实现注解的作用
+    在 doGetAuthorizationInfo 授权方法里面
 
-```html
-
+    1. 先获取当前 登录用户
+    2. 查询当前用户的角色 id
+    3. 根据 id 查询角色表里面的角色
+    4. 根据 id 查询权限表里面的权限
+    5. SimpleAuthorizationInfo 实例化 设置 roles 和 permissions
+    6. Controller 通过使用 @RequiresPermissions("X:X:X") 来实现权限控制
+    7. 到这里我们已经能根据用户的角色来实现对接口权限的控制
 ```
+
+- 目前还遗留的问题，因为前端需要菜单和按钮根据不同的角色要实现控制，如何提供更好的接口方式告知前端进行权限控制呢？
 
 ### com.github.pagehelper 帮助实现分页功能
 
