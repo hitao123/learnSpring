@@ -53,4 +53,10 @@ public class MallAdminService {
     public void deleteById(Integer id) {
         adminMapper.logicalDeleteByPrimaryKey(id);
     }
+
+    public void add(MallAdmin admin) {
+        admin.setUpdateTime(LocalDateTime.now());
+        admin.setLastLoginTime(LocalDateTime.now());
+        adminMapper.insertSelective(admin);
+    }
 }

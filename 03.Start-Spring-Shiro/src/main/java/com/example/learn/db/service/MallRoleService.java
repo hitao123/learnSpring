@@ -1,8 +1,10 @@
 package com.example.learn.db.service;
 
+import com.alibaba.druid.util.StringUtils;
 import com.example.learn.db.dao.MallRoleMapper;
 import com.example.learn.db.entity.MallRole;
 import com.example.learn.db.entity.MallRoleExample;
+import com.github.pagehelper.PageHelper;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -32,5 +34,21 @@ public class MallRoleService {
         }
 
         return roles;
+    }
+
+    public List<MallRole> querySelective(String username, Integer page, Integer limit, String sort, String order) {
+        MallRoleExample roleExample = new MallRoleExample();
+        MallRoleExample.Criteria criteria = roleExample.createCriteria();
+
+        if (!StringUtils.isEmpty(username)) {
+            criteria.andNameLike("%" + username + "%");
+        }
+
+        if (!StringUtils.isEmpty(sort) && !StringUtils.isEmpty(order)) {
+            roleExample.setOrderByClause(sort + " " + order);
+        }
+
+        PageHelper.startPage(page, limit);
+        return roleMapper.selectByExample(roleExample);
     }
 }

@@ -6,6 +6,8 @@ import com.example.learn.db.service.MallAdminService;
 import com.example.learn.db.service.MallPermissionService;
 import com.example.learn.db.service.MallRoleService;
 import com.example.learn.util.JacksonUtil;
+import com.example.learn.util.Permission;
+import com.example.learn.util.PermissionUtil;
 import com.example.learn.util.ResponseUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -17,14 +19,13 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @RestController
 @RequestMapping("/admin/auth")
@@ -45,7 +46,6 @@ public class AdminAuthController {
         String username = JacksonUtil.parseString(body, "username");
         String password = JacksonUtil.parseString(body, "password");
 
-        logger.info("username=" + username + " password=" + password);
         if (StringUtils.isEmpty(username) || StringUtils.isEmpty(password)) {
             return ResponseUtil.badArgument();
         }
@@ -93,9 +93,39 @@ public class AdminAuthController {
 
         data.put("roles", roles);
 
-        return ResponseUtil.ok(data);
+        // 权限api
+        data.put("permission", toAPI(permissions));
 
+        return ResponseUtil.ok(data);
     }
+
+    @Autowired
+    private ApplicationContext context;
+    private HashMap<String, String> systemPermissionsMap = null;
+
+    private Collection<String> toAPI(Set<String> permissions) {
+        if (systemPermissionsMap == null) {
+            systemPermissionsMap = new HashMap<>();
+            final String basicPackage = "com.example.learn";
+            List<Permission> systemPermissions = PermissionUtil.listPermission(context, basicPackage);
+            for (Permission permission : systemPermissions) {
+                String perm = permission.getRequiresPermissions().value()[0];
+                String api  = permission.getApi();
+                systemPermissionsMap.put(perm, api);
+            }
+        }
+
+        Collection<String> apis = new HashSet<>();
+
+        for (String perm: permissions) {
+            String api = systemPermissionsMap.get(perm);
+            apis.add(api);
+        }
+
+        return apis;
+    }
+
+
 
     @GetMapping("/401")
     public Object page401() {

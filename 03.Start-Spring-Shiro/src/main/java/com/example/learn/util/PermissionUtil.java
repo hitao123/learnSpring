@@ -16,6 +16,23 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.lang.reflect.Method;
 import java.util.*;
 
+/**
+ *     Permission entity
+ *     ================
+ *     private RequiresPermissions requiresPermissions;
+ *     private RequiresPermissionsDesc requiresPermissionsDesc; // menu [] button ""
+ *     private String api;
+ *
+ *     =============
+ *
+ *     PermVo entity
+ *     =============
+ *     private String id;
+ *     private String label;
+ *     private String api;
+ *     private List<PermVo> children;
+ *
+ */
 public class PermissionUtil {
 
     public static List<PermVo> listPermVo(List<Permission> permissions) {
@@ -30,6 +47,7 @@ public class PermissionUtil {
                 throw new RuntimeException("目前只支持两级菜单");
             }
 
+            // 获取注解一级菜单
             String menu1 = menus[0];
             PermVo perm1 = null;
 
@@ -48,6 +66,7 @@ public class PermissionUtil {
                 root.add(perm1);
             }
 
+            // 获取注解二级菜单
             String menu2 = menus[1];
             PermVo perm2 = null;
             for (PermVo permVo : perm1.getChildren()) {
@@ -65,6 +84,7 @@ public class PermissionUtil {
                 perm1.getChildren().add(perm2);
             }
 
+            // 获取按钮注解
             String button = requiresPermissionsDesc.button();
             PermVo leftPerm = null;
             for (PermVo permVo : perm2.getChildren()) {
@@ -94,10 +114,10 @@ public class PermissionUtil {
         List<Permission> permissions = new ArrayList<>();
         for(Map.Entry<String, Object> entry: map.entrySet()) {
             Object bean = entry.getValue();
-            if(StringUtils.contains(ClassUtils.getPackageName(bean.getClass()), basicPackage)) {
+            if(!StringUtils.contains(ClassUtils.getPackageName(bean.getClass()), basicPackage)) {
                 continue;
             }
-
+            
             Class<?> clz = bean.getClass();
             Class<?> controllerClz = clz.getSuperclass();
 
@@ -131,7 +151,7 @@ public class PermissionUtil {
 
                 GetMapping getMapping = AnnotationUtils.getAnnotation(method, GetMapping.class);
                 if(getMapping != null) {
-                    api = "GET " + api + postMapping.value()[0];
+                    api = "GET " + api + getMapping.value()[0];
 
                     Permission permission = new Permission();
                     permission.setRequiresPermissions(requiresPermissions);

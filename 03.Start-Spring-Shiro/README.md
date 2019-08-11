@@ -115,6 +115,35 @@ CREATE TABLE `mall_role` (
 
 - 目前还遗留的问题，因为前端需要菜单和按钮根据不同的角色要实现控制，如何提供更好的接口方式告知前端进行权限控制呢？
 
+### 实现用spring扫描自定义的annotation
+
+```java
+  @RequiresPermissionsDesc // 自定义注解
+  @RequiresPermissions("admin:admin:read")
+  @RequiresPermissionsDesc(menu = {"系统管理", "管理员管理"}, button = "详情")
+  @GetMapping("/read")
+
+  PermissionUtil.java public static List<Permission> listPermission(ApplicationContext context, String basicPackage)
+  是用来解析 @Controller 里面注解的
+  实现是通过 spring 的 AnnotationUtils.getAnnotation 方法实现的
+
+```
+
 ### com.github.pagehelper 帮助实现分页功能
 
 > 查询列表的功能经常需要做分页查询，这里是利用开源的 pagehelper 来实现分页的功能，后续可以对这个源码进行了解一下
+
+### java 知识点
+
+> 都知道 java 是 oop 语言，有封装、继承、多态（下面一段就是代码就是），List 是接口类， ArrayList 是实现类，接口不能实例化，但是创建一个指向自己的对象引用
+可以调用子类的方法
+
+```html
+
+List<PermVo> root = new ArrayList<>();
+
+```
+
+### idea 如何断点调试代码
+
+> 在调试接口的时候，在相应代码处前面添加断点，点击最上面的 debug 按钮就进入调试模式，底部进入下一步与chrome调试基本一致
